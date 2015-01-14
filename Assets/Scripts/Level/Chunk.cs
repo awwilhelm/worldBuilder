@@ -26,28 +26,42 @@ public class Chunk : MonoBehaviour {
 	public int chunkX;
 	public int chunkY;
 	public int chunkZ;
+	public int chunkID;
+	private int error = 0;
 
 	// Use this for initialization
 	void Start () {
+		if(networkView.isMine == false)
+		{
+			worldGO = GameObject.Find("World");
+			world= worldGO.GetComponent("World") as World;
+		}
+
 		mesh = GetComponent<MeshFilter> ().mesh;
 		col = GetComponent<MeshCollider> ();
-		world=worldGO.GetComponent("World") as World;
+		world= worldGO.GetComponent("World") as World;
 
+		//networkView.RPC("GenerateMesh", RPCMode.AllBuffered);
 		GenerateMesh();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 
+	//[RPC]
 	void GenerateMesh(){
-		
 		for (int x=0; x<chunkSize; x++){
 			for (int y=0; y<chunkSize; y++){
 				for (int z=0; z<chunkSize; z++){
 					//This code will run for every Block in the chunk
-					
+					/*error++;
+					if(error<10)
+					{
+						print (Block(x,y,z));
+						print (Block(x,y,z) == 1);
+					}*/
 					if(Block(x,y,z)!=0){
 						//If the Block is solid
 						
@@ -240,7 +254,36 @@ public class Chunk : MonoBehaviour {
 	}
 
 	byte Block(int x, int y, int z){
+/*		error++;
+		if(error<100)
+			print(chunkID);*/
 		return world.Block(x+chunkX,y+chunkY,z+chunkZ);
+	}
+
+	public void CallUpdateChunkID(int id)
+	{
+		networkView.RPC("UpdateChunkID", RPCMode.AllBuffered, id);
+	}
+
+	[RPC]
+	void UpdateChunkID(int id)
+	{
+		chunkID = id;
+	}
+
+	public void CallUpdateChunkProp(int size, int x, int y, int z)
+	{
+		networkView.RPC("UpdateChunkProp", RPCMode.AllBuffered, size, x, y, z);
+	}
+
+	[RPC]
+	void UpdateChunkProp(int size, int x, int y, int z)
+	{
+		chunkSize = size;
+		
+		chunkX = x;
+		chunkY = y;
+		chunkZ = z;
 	}
 
 

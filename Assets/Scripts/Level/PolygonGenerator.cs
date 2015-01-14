@@ -47,6 +47,7 @@ public class PolygonGenerator : MonoBehaviour {
 		GenTerrain();
 		BuildMesh();
 		UpdateMesh();
+		Debug.Log ("1");
 	}
 	
 	// Update is called once per frame
@@ -110,8 +111,6 @@ public class PolygonGenerator : MonoBehaviour {
 			stone+= Noise(px,0, 50,30,1);
 			stone+= Noise(px,0, 10,10,1);
 			stone+=75;
-			
-			print(stone);
 			
 			int dirt = Noise(px,0, 100f,35,1);
 			dirt+= Noise(px,100, 50,30,1);
