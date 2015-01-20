@@ -7,7 +7,7 @@ public class World : MonoBehaviour {
 	public byte[,,] data;
 	public int worldX=64;
 	public int worldY=64;
-	public int worldZ=16;
+	public int worldZ=64;
 
 	public GameObject chunk;
 	public GameObject[,,] chunks;
@@ -16,11 +16,12 @@ public class World : MonoBehaviour {
 	public bool generated = false;
 	private float seed;
 	private int chunkID;
-	private int errorCount = 0;
+//	private int errorCount = 0;
 
 	// Use this for initialization
 	void Start () {
 		chunkID = 0;
+		data = new byte[worldX,worldY,worldZ];
 	}
 	
 	// Update is called once per frame
@@ -30,9 +31,11 @@ public class World : MonoBehaviour {
 
 	public void ShouldGenerate()
 	{
-		seed = 1; //Random.Range(0.9f, 1.1f);
+		seed = Random.Range(0.9f, 1.1f);
+		networkView.RPC("UpdateSeedForMap", RPCMode.AllBuffered, seed);
 		//UpdateMapForAll();
-		networkView.RPC("UpdateMapForAll", RPCMode.AllBuffered);
+		networkView.RPC("GetData", RPCMode.AllBuffered);
+		UpdateMapForAll();
 		generated = true;
 	}
 
@@ -40,9 +43,9 @@ public class World : MonoBehaviour {
 
 	int PerlinNoise(int x,int y, int z, float scale, float height, float power){
 		float rValue;
-		rValue=Noise.GetNoise (((double)x) / scale, ((double)y)/ scale, ((double)z) / scale);
+		rValue=Noise.GetNoise (((double)x) / scale, ((double)y)/ scale * seed, ((double)z) / scale);
 		rValue*=height;
-		
+
 		if(power!=0){
 			rValue=Mathf.Pow( rValue, power);
 		}
@@ -51,13 +54,12 @@ public class World : MonoBehaviour {
 	}
 
 	[RPC]
-	void UpdateMapForAll()
+	void GetData()
 	{
-		data = new byte[worldX,worldY,worldZ];
 		for (int x=0; x<worldX; x++){
 			for (int z=0; z<worldZ; z++){
 				int stone=PerlinNoise(x,0,z,10,1,1.2f);
-				stone+= PerlinNoise(x,300,z,20,16,1*seed)+10;
+				stone+= PerlinNoise(x,300,z,20,16,1)+10;
 				int dirt=PerlinNoise(x,100,z,50,2,0) +1; //Added +1 to make sure minimum grass height is 1
 				for (int y=0; y<worldY; y++){
 					if(y<=stone){
@@ -67,10 +69,13 @@ public class World : MonoBehaviour {
 						data[x,y,z] = 2;
 						//networkView.RPC("UpdateDataValue", RPCMode.AllBuffered, x, y, z, 2);
 					}
-					
 				}
 			}
 		}
+	}
+	
+	void UpdateMapForAll()
+	{
 		chunks=new GameObject[Mathf.FloorToInt(worldX/chunkSize),
 		                      Mathf.FloorToInt(worldY/chunkSize),
 		                      Mathf.FloorToInt(worldZ/chunkSize)];
@@ -111,6 +116,12 @@ public class World : MonoBehaviour {
 		}
 
 		return data[x,y,z];
+	}
+
+	[RPC]
+	void UpdateSeedForMap(float tempSeed)
+	{
+		seed = tempSeed;
 	}
 
 

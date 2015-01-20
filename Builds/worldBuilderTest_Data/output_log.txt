@@ -1,0 +1,68 @@
+Initialize engine version: 4.6.0f2 (b073107612b7)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 760 (ID=0x1187)
+    Vendor:   NVIDIA
+    VRAM:     1985 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.114 seconds
+desktop: 1600x900 60Hz; virtual: 1600x900 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\System.Core.dll (this message is harmless)
+health 100
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+Platform assembly: C:\Users\Alex\Documents\Unity Games\WorldBuilder\Builds\worldBuilderTest_Data\Managed\Boo.Lang.dll (this message is harmless)
+Couldn't send RPC function 'updateMovement' to server
+
+ 
+(Filename:  Line: 2463)
+
+Couldn't send RPC function 'updateMovement' to server
+
+ 
+(Filename:  Line: 2463)
+
+Couldn't send RPC function 'updateMovement' to server
+
+ 
+(Filename:  Line: 2463)
+
+Couldn't send RPC function 'updateMovement' to server
+
+ 
+(Filename:  Line: 2463)
+
+The server has disconnected from the client. Most likely the server has shut down.
+ 
+(Filename:  Line: 745)
+
+UnloadTime: 0.510495 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 65 unused Assets to reduce memory usage. Loaded Objects now: 228.
+Total: 0.567963 ms (FindLiveObjects: 0.011668 ms CreateObjectMapping: 0.011960 ms MarkObjects: 0.092472 ms  DeleteObjects: 0.128644 ms)
+
+No objects for the given player ID were deleted 5
+ 
+(Filename:  Line: 1373)
+
+UnloadTime: 0.542584 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 65 unused Assets to reduce memory usage. Loaded Objects now: 215.
+Total: 0.631556 ms (FindLiveObjects: 0.008167 ms CreateObjectMapping: 0.019836 ms MarkObjects: 0.119018 ms  DeleteObjects: 0.184653 ms)
+

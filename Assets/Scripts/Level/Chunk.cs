@@ -27,7 +27,7 @@ public class Chunk : MonoBehaviour {
 	public int chunkY;
 	public int chunkZ;
 	public int chunkID;
-	private int error = 0;
+//	private int error = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -56,47 +56,41 @@ public class Chunk : MonoBehaviour {
 			for (int y=0; y<chunkSize; y++){
 				for (int z=0; z<chunkSize; z++){
 					//This code will run for every Block in the chunk
-					/*error++;
-					if(error<10)
-					{
-						print (Block(x,y,z));
-						print (Block(x,y,z) == 1);
-					}*/
 					if(Block(x,y,z)!=0){
 						//If the Block is solid
 						
 						if(Block(x,y+1,z)==0){
 							//Block above is air
-							CubeTop(x,y,z,Block(x,y,z));
+							CubeTop(x,y,z);
 						}
 						
 						if(Block(x,y-1,z)==0){
 							//Block below is air
-							CubeBot(x,y,z,Block(x,y,z));
+							CubeBot(x,y,z);
 							
 						}
 						
 						if(Block(x+1,y,z)==0){
 							//Block east is air
-							CubeEast(x,y,z,Block(x,y,z));
+							CubeEast(x,y,z);
 							
 						}
 						
 						if(Block(x-1,y,z)==0){
 							//Block west is air
-							CubeWest(x,y,z,Block(x,y,z));
+							CubeWest(x,y,z);
 							
 						}
 						
 						if(Block(x,y,z+1)==0){
 							//Block north is air
-							CubeNorth(x,y,z,Block(x,y,z));
+							CubeNorth(x,y,z);
 							
 						}
 						
 						if(Block(x,y,z-1)==0){
 							//Block south is air
-							CubeSouth(x,y,z,Block(x,y,z));
+							CubeSouth(x,y,z);
 							
 						}
 						
@@ -109,7 +103,7 @@ public class Chunk : MonoBehaviour {
 		UpdateMesh ();
 	}
 
-	void CubeTop (int x, int y, int z, byte block) {
+	void CubeTop (int x, int y, int z) {
 		
 		newVertices.Add(new Vector3 (x,  y,  z + 1));
 		newVertices.Add(new Vector3 (x + 1, y,  z + 1));
@@ -128,7 +122,7 @@ public class Chunk : MonoBehaviour {
 		
 	}
 
-	void CubeNorth (int x, int y, int z, byte block) {
+	void CubeNorth (int x, int y, int z) {
 		
 		//CubeNorth
 		newVertices.Add(new Vector3 (x + 1, y-1, z + 1));
@@ -144,7 +138,7 @@ public class Chunk : MonoBehaviour {
 		
 	}
 
-	void CubeEast (int x, int y, int z, byte block) {
+	void CubeEast (int x, int y, int z) {
 		
 		//CubeEast
 		newVertices.Add(new Vector3 (x + 1, y - 1, z));
@@ -160,7 +154,7 @@ public class Chunk : MonoBehaviour {
 		
 	}
 
-	void CubeSouth (int x, int y, int z, byte block) {
+	void CubeSouth (int x, int y, int z) {
 		
 		//CubeSouth
 		newVertices.Add(new Vector3 (x, y - 1, z));
@@ -176,7 +170,7 @@ public class Chunk : MonoBehaviour {
 		
 	}
 
-	void CubeWest (int x, int y, int z, byte block) {
+	void CubeWest (int x, int y, int z) {
 		
 		//CubeWest
 		newVertices.Add(new Vector3 (x, y- 1, z + 1));
@@ -192,7 +186,7 @@ public class Chunk : MonoBehaviour {
 		
 	}
 
-	void CubeBot (int x, int y, int z, byte block) {
+	void CubeBot (int x, int y, int z) {
 		
 		//CubeBot
 		newVertices.Add(new Vector3 (x,  y-1,  z ));
@@ -254,9 +248,6 @@ public class Chunk : MonoBehaviour {
 	}
 
 	byte Block(int x, int y, int z){
-/*		error++;
-		if(error<100)
-			print(chunkID);*/
 		return world.Block(x+chunkX,y+chunkY,z+chunkZ);
 	}
 

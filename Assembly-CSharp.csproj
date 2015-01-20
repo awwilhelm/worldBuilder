@@ -50,14 +50,19 @@
      <Compile Include="Assets\Scripts\Level\CameraScript.cs" />
      <Compile Include="Assets\Scripts\Level\Chunk.cs" />
      <Compile Include="Assets\Scripts\Level\ColliderExample.cs" />
+     <Compile Include="Assets\Scripts\Level\Crosshair.cs" />
      <Compile Include="Assets\Scripts\Level\CursorControl.cs" />
+     <Compile Include="Assets\Scripts\Level\Health.cs" />
      <Compile Include="Assets\Scripts\Level\MovementUpdate.cs" />
      <Compile Include="Assets\Scripts\Level\Multiplayer.cs" />
      <Compile Include="Assets\Scripts\Level\Noise.cs" />
+     <Compile Include="Assets\Scripts\Level\PlayerGUI.cs" />
+     <Compile Include="Assets\Scripts\Level\PlayerName.cs" />
      <Compile Include="Assets\Scripts\Level\PolygonGenerator.cs" />
      <Compile Include="Assets\Scripts\Level\RaycastExample.cs" />
      <Compile Include="Assets\Scripts\Level\Spawn.cs" />
      <Compile Include="Assets\Scripts\Level\World.cs" />
+     <Compile Include="Assets\Scripts\Level\basicWeapon.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
