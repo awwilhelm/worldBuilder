@@ -16,12 +16,18 @@ public class World : MonoBehaviour {
 	public bool generated = false;
 	private float seed;
 	private int chunkID;
+	private int randomChunkx;
+	private int randomChunkz;
+
+	public GameObject platform;
 //	private int errorCount = 0;
 
 	// Use this for initialization
 	void Start () {
 		chunkID = 0;
 		data = new byte[worldX,worldY,worldZ];
+		randomChunkx = Random.Range (0 + chunkSize, worldX - chunkSize);
+		randomChunkz = Random.Range (0 + chunkSize, worldZ - chunkSize);
 	}
 	
 	// Update is called once per frame
@@ -37,6 +43,7 @@ public class World : MonoBehaviour {
 		networkView.RPC("GetData", RPCMode.AllBuffered);
 		UpdateMapForAll();
 		generated = true;
+		Network.Instantiate (platform, new Vector3 (randomChunkx, 40, randomChunkz), Quaternion.identity, 0);
 	}
 
 
@@ -72,6 +79,13 @@ public class World : MonoBehaviour {
 				}
 			}
 		}
+
+		//data[x,40, z] = 2;
+
+
+
+
+
 	}
 	
 	void UpdateMapForAll()

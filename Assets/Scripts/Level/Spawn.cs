@@ -34,7 +34,25 @@ public class Spawn : MonoBehaviour {
 		{
 			if(GUILayout.Button("Spawn", GUILayout.Height(40 * 2)))
 			{
-				Network.Instantiate(player, new Vector3 (25, 25, 25), Quaternion.identity, 0);	
+				GameObject[] objs = GameObject.FindGameObjectsWithTag("SpawnPoint") as GameObject[];
+				int randomSpawn = Random.Range(0, 3);
+				int index = 0;
+				foreach(GameObject spawn in objs)
+				{
+					SpawnPtScript spawnPtScript = spawn.GetComponent<SpawnPtScript>();
+					if(randomSpawn == index)
+					{
+						if(spawnPtScript.taken == false)
+						{
+							spawnPtScript.CallChangeTaken(true);
+							Network.Instantiate(player,
+							                    new Vector3 (spawn.transform.position.x, spawn.transform.position.y+2, spawn.transform.position.z),
+							    				Quaternion.identity, 0);
+						}
+					}
+					index++;
+				}
+				//Network.Instantiate(player, new Vector3 (25, 25, 25), Quaternion.identity, 0);	
 				justConnectedToServer = false;
 				iAmDestroyed = false;
 				spawned = true;
