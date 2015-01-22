@@ -48,6 +48,9 @@ public class Spawn : MonoBehaviour {
 							Network.Instantiate(player,
 							                    new Vector3 (spawn.transform.position.x, spawn.transform.position.y+2, spawn.transform.position.z),
 							    				Quaternion.identity, 0);
+
+							//GameObject player_instance = (GameObject)Network.Instantiate(player, ...);
+
 						}
 					}
 					index++;
