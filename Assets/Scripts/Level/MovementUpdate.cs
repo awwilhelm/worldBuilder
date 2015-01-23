@@ -20,7 +20,7 @@ public class MovementUpdate : MonoBehaviour {
 		
 		else
 		{
-			//enabled = false;
+			enabled = false;
 		}
 	}
 	

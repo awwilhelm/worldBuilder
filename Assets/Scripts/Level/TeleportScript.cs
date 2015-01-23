@@ -4,10 +4,20 @@ using System.Collections;
 public class TeleportScript : MonoBehaviour {
 
 	private bool once = false;
+	private const float waitTime = 2f;
+	private float lastTpTime;
 	// Use this for initialization
 	void Start ()
 	{
-	
+		if(networkView.isMine == true)
+		{
+			lastTpTime = Time.time;
+		}
+
+		else
+		{
+			enabled = false;
+		}
 	}
 	
 	// Update is called once per frame
@@ -18,24 +28,35 @@ public class TeleportScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if (collision.tag == "ParticalCollider")
+		if(networkView.isMine == true)
 		{
-			if(once == false)
+			if (collision.tag == "ParticalCollider")
 			{
-				if(collision.transform.parent.name == "tpLocation")
+				if(Time.time - lastTpTime > waitTime)
 				{
-					//need to make game object with myPlayer tag
-					GameObject.FindGameObjectWithTag("myPlayer").transform.position = collision.transform.parent.parent.FindChild("tpLocation1").transform.position;
-					once = true;
-				}
+					if(collision.transform.parent.name == "tpLocation")
+					{
+						once = true;
+						Vector3 tpLocationPos = collision.transform.parent.parent.FindChild("tpLocation1").transform.position;
+						Quaternion tpLocationRotation = collision.transform.parent.parent.FindChild("tpLocation").transform.rotation;
+						GameObject.FindGameObjectWithTag("myPlayer").transform.position = new Vector3(tpLocationPos.x, tpLocationPos.y + 1.75f, tpLocationPos.z);
+						GameObject.FindGameObjectWithTag("myPlayer").transform.rotation = Quaternion.Euler(tpLocationRotation.x, tpLocationRotation.y, tpLocationRotation.z);
+						lastTpTime = Time.time;
+						print ("2");
+					}
 
-				else if(collision.transform.parent.name == "tpLocation1")
-				{
-					GameObject.FindGameObjectWithTag("myPlayer").transform.position = collision.transform.parent.parent.FindChild("tpLocation").transform.position;
-					once = true;
-				}
-				print (collision.gameObject.name);
+					else if(collision.transform.parent.name == "tpLocation1")
+					{
+						once = true;
+						Vector3 tpLocationPos = collision.transform.parent.parent.FindChild("tpLocation").transform.position;
+						Quaternion tpLocationRotation = collision.transform.parent.parent.FindChild("tpLocation").transform.rotation;
+						GameObject.FindGameObjectWithTag("myPlayer").transform.position = new Vector3(tpLocationPos.x, tpLocationPos.y + 1.75f, tpLocationPos.z);
+						GameObject.FindGameObjectWithTag("myPlayer").transform.rotation = Quaternion.Euler(tpLocationRotation.x, tpLocationRotation.y, tpLocationRotation.z);
+						lastTpTime = Time.time;
+						print ("1");
+					}
 
+				}
 			}
 		}
 	}

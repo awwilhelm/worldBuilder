@@ -7,7 +7,7 @@ public class Spawn : MonoBehaviour {
 	private Rect joinRect;
 	public bool spawned = false;
 	
-	public GameObject player;
+	public GameObject playerPrefab;
 	public World worldScript;
 	public bool iAmDestroyed;
 
@@ -45,12 +45,11 @@ public class Spawn : MonoBehaviour {
 						if(spawnPtScript.taken == false)
 						{
 							spawnPtScript.CallChangeTaken(true);
-							Network.Instantiate(player,
-							                    new Vector3 (spawn.transform.position.x, spawn.transform.position.y+2, spawn.transform.position.z),
-							    				Quaternion.identity, 0);
 
-							//GameObject player_instance = (GameObject)Network.Instantiate(player, ...);
-
+							GameObject player_instance = (GameObject)Network.Instantiate(playerPrefab,
+							                                                             new Vector3 (spawn.transform.position.x, spawn.transform.position.y+2, spawn.transform.position.z),
+							                                                             Quaternion.identity, 0);
+							player_instance.transform.tag = "myPlayer";
 						}
 					}
 					index++;
