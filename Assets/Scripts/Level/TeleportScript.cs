@@ -3,8 +3,7 @@ using System.Collections;
 
 public class TeleportScript : MonoBehaviour {
 
-	private bool once = false;
-	private const float waitTime = 2f;
+	private const float waitTime = 1f;
 	private float lastTpTime;
 	// Use this for initialization
 	void Start ()
@@ -34,26 +33,22 @@ public class TeleportScript : MonoBehaviour {
 			{
 				if(Time.time - lastTpTime > waitTime)
 				{
-					if(collision.transform.parent.name == "tpLocation")
+					if(collision.transform.parent.name == "tpStart")
 					{
-						once = true;
-						Vector3 tpLocationPos = collision.transform.parent.parent.FindChild("tpLocation1").transform.position;
-						Quaternion tpLocationRotation = collision.transform.parent.parent.FindChild("tpLocation").transform.rotation;
+						Vector3 tpLocationPos = collision.transform.parent.parent.FindChild("tpEnd").transform.position;
+						Vector3 tpLocationRotation = collision.transform.parent.parent.FindChild("tpEnd").transform.eulerAngles;
 						GameObject.FindGameObjectWithTag("myPlayer").transform.position = new Vector3(tpLocationPos.x, tpLocationPos.y + 1.75f, tpLocationPos.z);
 						GameObject.FindGameObjectWithTag("myPlayer").transform.rotation = Quaternion.Euler(tpLocationRotation.x, tpLocationRotation.y, tpLocationRotation.z);
 						lastTpTime = Time.time;
-						print ("2");
 					}
 
-					else if(collision.transform.parent.name == "tpLocation1")
+					else if(collision.transform.parent.name == "tpEnd")
 					{
-						once = true;
-						Vector3 tpLocationPos = collision.transform.parent.parent.FindChild("tpLocation").transform.position;
-						Quaternion tpLocationRotation = collision.transform.parent.parent.FindChild("tpLocation").transform.rotation;
+						Vector3 tpLocationPos = collision.transform.parent.parent.FindChild("tpStart").transform.position;
+						Vector3 tpLocationRotation = collision.transform.parent.parent.FindChild("tpStart").transform.eulerAngles;
 						GameObject.FindGameObjectWithTag("myPlayer").transform.position = new Vector3(tpLocationPos.x, tpLocationPos.y + 1.75f, tpLocationPos.z);
 						GameObject.FindGameObjectWithTag("myPlayer").transform.rotation = Quaternion.Euler(tpLocationRotation.x, tpLocationRotation.y, tpLocationRotation.z);
 						lastTpTime = Time.time;
-						print ("1");
 					}
 
 				}

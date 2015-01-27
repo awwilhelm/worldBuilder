@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class World : MonoBehaviour {
 	
 	public byte[,,] data;
-	public int worldX=64;
-	public int worldY=64;
-	public int worldZ=64;
+	private const int worldX=160;//320
+	private const int worldY=64;
+	private const int worldZ=160;
 
 	public GameObject chunk;
 	public GameObject[,,] chunks;
@@ -19,7 +19,8 @@ public class World : MonoBehaviour {
 	private int randomChunkx;
 	private int randomChunkz;
 
-	public GameObject platform;
+	public GameObject teleportPrefab;
+	public GameObject platformPrefab;
 //	private int errorCount = 0;
 
 	// Use this for initialization
@@ -43,7 +44,7 @@ public class World : MonoBehaviour {
 		networkView.RPC("GetData", RPCMode.AllBuffered);
 		UpdateMapForAll();
 		generated = true;
-		Network.Instantiate (platform, new Vector3 (randomChunkx, 40, randomChunkz), Quaternion.identity, 0);
+		Network.Instantiate (platformPrefab, new Vector3 (randomChunkx, 40, randomChunkz), Quaternion.identity, 0);
 	}
 
 
@@ -66,7 +67,8 @@ public class World : MonoBehaviour {
 		for (int x=0; x<worldX; x++){
 			for (int z=0; z<worldZ; z++){
 				int stone=PerlinNoise(x,0,z,10,1,1.2f);
-				stone+= PerlinNoise(x,300,z,20,16,1)+10;
+				stone+= PerlinNoise(x,300,z,40,32,1)+10;
+				//stone+= PerlinNoise(x,1,z,10,10,1);
 				int dirt=PerlinNoise(x,100,z,50,2,0) +1; //Added +1 to make sure minimum grass height is 1
 				for (int y=0; y<worldY; y++){
 					if(y<=stone){
@@ -119,6 +121,8 @@ public class World : MonoBehaviour {
 				}
 			}
 		}
+
+		//Network.Instantiate();
 	}
 
 

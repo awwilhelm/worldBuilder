@@ -22,7 +22,6 @@ public class Health : MonoBehaviour {
 			maxHealth = 100;
 			health = maxHealth;
 			healthPercent = 100;
-			print ("health " + health);
 			networkView.RPC("UpdateHealth", RPCMode.AllBuffered, health);
 		}
 
