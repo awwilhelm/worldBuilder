@@ -20,6 +20,7 @@ public class World : MonoBehaviour {
 	private int randomChunkz;
 
 	public GameObject teleportPrefab;
+	private GameObject teleportPrefabInstance;
 	public GameObject platformPrefab;
 //	private int errorCount = 0;
 
@@ -44,7 +45,12 @@ public class World : MonoBehaviour {
 		networkView.RPC("GetData", RPCMode.AllBuffered);
 		UpdateMapForAll();
 		generated = true;
-		Network.Instantiate (platformPrefab, new Vector3 (randomChunkx, 40, randomChunkz), Quaternion.identity, 0);
+		Network.Instantiate (platformPrefab, new Vector3 (randomChunkx, 50, randomChunkz), Quaternion.identity, 0);
+
+		GameObject teleportPrefabInstance = (GameObject)Network.Instantiate (teleportPrefab, new Vector3 (randomChunkx, 50, randomChunkz), Quaternion.identity, 0);
+		Vector3 tpEndPos = teleportPrefab.transform.Find ("tpEnd").position;
+		teleportPrefabInstance.transform.Find ("tpEnd").position = new Vector3 (tpEndPos.x + randomChunkx, tpEndPos.y + 10 + 50, tpEndPos.z + randomChunkz);
+
 	}
 
 
@@ -82,7 +88,8 @@ public class World : MonoBehaviour {
 			}
 		}
 
-		//data[x,40, z] = 2;
+		//spawn teleporters
+
 
 
 
@@ -141,7 +148,6 @@ public class World : MonoBehaviour {
 	{
 		seed = tempSeed;
 	}
-
 
 
 

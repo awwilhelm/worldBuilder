@@ -217,7 +217,7 @@ MonoBehaviour:
   chunk: {fileID: 100000, guid: e6cae92ba2b8f9c49abc93dda6d91f3b, type: 2}
   chunkSize: 16
   generated: 0
-  teleportPrefab: {fileID: 0}
+  teleportPrefab: {fileID: 173410, guid: 51041c49e734fd14693a8cdf3d4b5092, type: 2}
   platformPrefab: {fileID: 100002, guid: 50e6c42e414e8473492befedf715eb16, type: 2}
 --- !u!4 &1226994538
 Transform:
@@ -510,8 +510,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1657910717}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25, y: 25, z: 0}
+  m_LocalRotation: {x: .1677313, y: .254887044, z: -.0449434705, w: .951251268}
+  m_LocalPosition: {x: 25, y: 60, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
