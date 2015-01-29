@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class World : MonoBehaviour {
 	
 	public byte[,,] data;
+	public float[,,] heightMap;
 	private const int worldX=160;//320
 	private const int worldY=64;
 	private const int worldZ=160;
@@ -18,6 +19,7 @@ public class World : MonoBehaviour {
 	private int chunkID;
 	private int randomChunkx;
 	private int randomChunkz;
+	private const float platformHeight = 50;
 
 	public GameObject teleportPrefab;
 	private GameObject teleportPrefabInstance;
@@ -28,6 +30,7 @@ public class World : MonoBehaviour {
 	void Start () {
 		chunkID = 0;
 		data = new byte[worldX,worldY,worldZ];
+		heightMap = new float[chunkSize, chunkSize, chunkSize];
 		randomChunkx = Random.Range (0 + chunkSize, worldX - chunkSize);
 		randomChunkz = Random.Range (0 + chunkSize, worldZ - chunkSize);
 	}
@@ -45,12 +48,47 @@ public class World : MonoBehaviour {
 		networkView.RPC("GetData", RPCMode.AllBuffered);
 		UpdateMapForAll();
 		generated = true;
-		Network.Instantiate (platformPrefab, new Vector3 (randomChunkx, 50, randomChunkz), Quaternion.identity, 0);
+		Network.Instantiate (platformPrefab, new Vector3 (randomChunkx, platformHeight, randomChunkz), Quaternion.identity, 0);
 
-		GameObject teleportPrefabInstance = (GameObject)Network.Instantiate (teleportPrefab, new Vector3 (randomChunkx, 50, randomChunkz), Quaternion.identity, 0);
+		GameObject teleportPrefabInstance = (GameObject)Network.Instantiate (teleportPrefab, new Vector3 (randomChunkx, platformHeight, randomChunkz), Quaternion.identity, 0);
 		Vector3 tpEndPos = teleportPrefab.transform.Find ("tpEnd").position;
-		teleportPrefabInstance.transform.Find ("tpEnd").position = new Vector3 (tpEndPos.x + randomChunkx, tpEndPos.y + 10 + 50, tpEndPos.z + randomChunkz);
+		//teleportPrefabInstance.transform.Find ("tpEnd").position = new Vector3 (tpEndPos.x + randomChunkx, tpEndPos.y + 10 + platformHeight, tpEndPos.z + randomChunkz);
 
+		float teleportX = teleportPrefabInstance.transform.position.x;
+		float teleportY = 0;
+		float teleportZ = teleportPrefabInstance.transform.position.z;
+
+		float highestYPosition=0;
+		float[,] highestYIndex = {randomChunkx, randomChunkz};
+
+		for(int x = randomChunkx; x<randomChunkx+chunkSize; x++)
+		{
+			for(int z=randomChunkz; z<randomChunkz+chunkSize; z++)
+			{
+				for (int y=0; y<platformHeight; y++)
+				{
+					if((int)Block ((int)teleportX, (int)y, (int)teleportZ) == 0)
+					{
+						heightMap = [x, (float)i - 1.5f, z];	//switch to list so I can have 3 values and change the numbers
+						y = (int)platformHeight;
+
+						if(heightMap.GetValue(1)>highestYPosition)
+						{
+							highestYPosition = heightMap.GetValue(1);
+							highestYIndex = [heightMap.GetValue(0), heightMap.GetValue(2)];
+						}
+					}
+				}
+			}
+		}
+
+		
+
+
+
+		networkView.RPC("UpdateGameObjectPosition", RPCMode.AllBuffered,
+		                teleportPrefabInstance.transform.Find ("tpEnd").networkView.viewID,
+		                new Vector3 (tpEndPos.x + randomChunkx +0.5f, teleportY, tpEndPos.z + randomChunkz+0.5f));
 	}
 
 
@@ -75,7 +113,7 @@ public class World : MonoBehaviour {
 				int stone=PerlinNoise(x,0,z,10,1,1.2f);
 				stone+= PerlinNoise(x,300,z,40,32,1)+10;
 				//stone+= PerlinNoise(x,1,z,10,10,1);
-				int dirt=PerlinNoise(x,100,z,50,2,0) +1; //Added +1 to make sure minimum grass height is 1
+				int dirt=PerlinNoise(x,100,z,47,2,0) +1; //Added +1 to make sure minimum grass height is 1
 				for (int y=0; y<worldY; y++){
 					if(y<=stone){
 						data[x,y,z] = 1;
@@ -149,7 +187,11 @@ public class World : MonoBehaviour {
 		seed = tempSeed;
 	}
 
-
+	[RPC]
+	void UpdateGameObjectPosition(NetworkViewID netViewID, Vector3 position)
+	{
+		NetworkView.Find (netViewID).transform.position = position;
+	}
 
 
 

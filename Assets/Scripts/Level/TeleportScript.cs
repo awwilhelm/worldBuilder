@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TeleportScript : MonoBehaviour {
 
-	private const float waitTime = 1f;
+	private const float waitTime = 0.45f;
 	private float lastTpTime;
 	// Use this for initialization
 	void Start ()
