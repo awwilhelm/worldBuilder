@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class World : MonoBehaviour {
 	
 	public byte[,,] data;
-	public float[,,] heightMap;
+	public float[,] heightMap;
 	private const int worldX=160;//320
 	private const int worldY=64;
 	private const int worldZ=160;
@@ -24,24 +24,30 @@ public class World : MonoBehaviour {
 	public GameObject teleportPrefab;
 	private GameObject teleportPrefabInstance;
 	public GameObject platformPrefab;
+	public int teleportLocationPadding = 5;
 //	private int errorCount = 0;
 
 	// Use this for initialization
 	void Start () {
 		chunkID = 0;
 		data = new byte[worldX,worldY,worldZ];
-		heightMap = new float[chunkSize, chunkSize, chunkSize];
-		randomChunkx = Random.Range (0 + chunkSize, worldX - chunkSize);
-		randomChunkz = Random.Range (0 + chunkSize, worldZ - chunkSize);
+		heightMap = new float[worldX, worldZ];
+		//randomChunkx = Random.Range (0 + chunkSize, worldX - chunkSize);
+		//randomChunkz = Random.Range (0 + chunkSize, worldZ - chunkSize);
+
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ()
+	{
+
 	}
 
 	public void ShouldGenerate()
 	{
+		networkView.RPC("RandomChunkXandY", RPCMode.AllBuffered, Random.Range (0 + chunkSize, worldX - chunkSize), Random.Range(0 + chunkSize, worldZ - chunkSize));
+
+
 		seed = Random.Range(0.9f, 1.1f);
 		networkView.RPC("UpdateSeedForMap", RPCMode.AllBuffered, seed);
 		//UpdateMapForAll();
@@ -51,44 +57,38 @@ public class World : MonoBehaviour {
 		Network.Instantiate (platformPrefab, new Vector3 (randomChunkx, platformHeight, randomChunkz), Quaternion.identity, 0);
 
 		GameObject teleportPrefabInstance = (GameObject)Network.Instantiate (teleportPrefab, new Vector3 (randomChunkx, platformHeight, randomChunkz), Quaternion.identity, 0);
-		Vector3 tpEndPos = teleportPrefab.transform.Find ("tpEnd").position;
 		//teleportPrefabInstance.transform.Find ("tpEnd").position = new Vector3 (tpEndPos.x + randomChunkx, tpEndPos.y + 10 + platformHeight, tpEndPos.z + randomChunkz);
 
-		float teleportX = teleportPrefabInstance.transform.position.x;
-		float teleportY = 0;
-		float teleportZ = teleportPrefabInstance.transform.position.z;
-
 		float highestYPosition=0;
-		float[,] highestYIndex = {randomChunkx, randomChunkz};
+		float highestYIndexX = 0;
+		float highestYIndexZ = 0;
 
-		for(int x = randomChunkx; x<randomChunkx+chunkSize; x++)
+		for(int x = randomChunkx-chunkSize/2 - teleportLocationPadding; x<randomChunkx+chunkSize/2 + teleportLocationPadding; x++)
 		{
-			for(int z=randomChunkz; z<randomChunkz+chunkSize; z++)
+			for(int z=randomChunkz-chunkSize/2 - teleportLocationPadding; z<randomChunkz+chunkSize/2 + teleportLocationPadding; z++)
 			{
 				for (int y=0; y<platformHeight; y++)
 				{
-					if((int)Block ((int)teleportX, (int)y, (int)teleportZ) == 0)
+					if((int)Block ((int)x, (int)y, (int)z) == 0)
 					{
-						heightMap = [x, (float)i - 1.5f, z];	//switch to list so I can have 3 values and change the numbers
-						y = (int)platformHeight;
+						//heightMap = [x, , z];	//switch to list so I can have 3 values and change the numbers
+						//heightMap[x,z] = (float)y - 1.5f;
 
-						if(heightMap.GetValue(1)>highestYPosition)
+						if(y-1.5>highestYPosition)
 						{
-							highestYPosition = heightMap.GetValue(1);
-							highestYIndex = [heightMap.GetValue(0), heightMap.GetValue(2)];
+							highestYPosition = (float)y - 1.5f;		///heightMap[x,z];
+							highestYIndexX = x;
+							highestYIndexZ = z;
 						}
+						y = (int)platformHeight;
 					}
 				}
 			}
 		}
 
-		
-
-
-
 		networkView.RPC("UpdateGameObjectPosition", RPCMode.AllBuffered,
 		                teleportPrefabInstance.transform.Find ("tpEnd").networkView.viewID,
-		                new Vector3 (tpEndPos.x + randomChunkx +0.5f, teleportY, tpEndPos.z + randomChunkz+0.5f));
+		                new Vector3 (highestYIndexX+0.5f, highestYPosition, highestYIndexZ+0.5f));
 	}
 
 
@@ -193,7 +193,12 @@ public class World : MonoBehaviour {
 		NetworkView.Find (netViewID).transform.position = position;
 	}
 
-
+	[RPC]
+	void RandomChunkXandY(int x, int z)
+	{
+		randomChunkx = x;
+		randomChunkz = z;
+	}
 
 
 
