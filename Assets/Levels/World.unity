@@ -219,6 +219,7 @@ MonoBehaviour:
   generated: 0
   teleportPrefab: {fileID: 173410, guid: 51041c49e734fd14693a8cdf3d4b5092, type: 2}
   platformPrefab: {fileID: 100002, guid: 50e6c42e414e8473492befedf715eb16, type: 2}
+  teleportLocationPadding: 5
 --- !u!4 &1226994538
 Transform:
   m_ObjectHideFlags: 0

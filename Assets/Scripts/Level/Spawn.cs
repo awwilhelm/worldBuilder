@@ -44,7 +44,7 @@ public class Spawn : MonoBehaviour {
 					{
 						if(spawnPtScript.taken == false)
 						{
-							spawnPtScript.CallChangeTaken(true);
+							//spawnPtScript.CallChangeTaken(true);
 
 							GameObject player_instance = (GameObject)Network.Instantiate(playerPrefab,
 							                                                             new Vector3 (spawn.transform.position.x, spawn.transform.position.y+2, spawn.transform.position.z),

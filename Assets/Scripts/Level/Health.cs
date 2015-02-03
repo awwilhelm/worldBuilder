@@ -58,8 +58,8 @@ public class Health : MonoBehaviour {
 			Spawn spawnScript = GameObject.Find("SpawnManager").GetComponent<Spawn>();
 			spawnScript.iAmDestroyed = true;
 
-			Network.RemoveRPCs(Network.player);
-			networkView.RPC("DestroySelf", RPCMode.All);
+
+			networkView.RPC("DestroySelf", RPCMode.AllBuffered);
 		}
 	}
 
@@ -95,6 +95,7 @@ public class Health : MonoBehaviour {
 	[RPC]
 	void UpdatePlayerHitColor(string name)
 	{
+		print (gameObject.transform.parent.name);
 		GameObject.Find("Graphics").renderer.material = playerHitColor;
 	}
 
@@ -107,7 +108,12 @@ public class Health : MonoBehaviour {
 	[RPC]
 	void DestroySelf()
 	{
-		Destroy(transform.parent.gameObject);
+		//Might have to change myPlayer to something else.  Everything works until the person dies.. Then it kills self :(
+		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("myPlayer").transform.Find("CameraHead").networkView.viewID);
+		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("myPlayer").transform.Find("Trigger").networkView.viewID);
+		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("myPlayer").networkView.viewID);
+		//Network.DestroyPlayerObjects(Network.player);
+		Destroy(GameObject.FindGameObjectWithTag("myPlayer").gameObject);
 	}
 
 

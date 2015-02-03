@@ -24,7 +24,7 @@ public class basicWeapon : MonoBehaviour {
 			range = 3.0f;
 			nextShot = Time.time;
 			nextShotPercent = 100;
-			fireRate = 0.5f;
+			fireRate = 0.01f; //0.5
 			myCamera = transform.FindChild("CameraHead");
 			transform.FindChild("Trigger").GetComponent<BoxCollider>().enabled = false;
 			//myTransform = transform;
