@@ -65,11 +65,16 @@ public class Health : MonoBehaviour {
 
 	public void TakeDamage(int damage)
 	{
+		//This is called by the person who fires.. Weird.
+		print ("Called");
 		health -= damage;
 		if(health < 0)
 			health = 0;
-		networkView.RPC("UpdateHealth", RPCMode.AllBuffered, health);
-		networkView.RPC("HitChange", RPCMode.AllBuffered, true);
+		else
+		{
+			networkView.RPC("UpdateHealth", RPCMode.AllBuffered, health);
+			networkView.RPC("HitChange", RPCMode.AllBuffered, true);
+		}
 	}
 
 	[RPC]
@@ -95,7 +100,7 @@ public class Health : MonoBehaviour {
 	[RPC]
 	void UpdatePlayerHitColor(string name)
 	{
-		print (gameObject.transform.parent.name);
+		//print (gameObject.transform.parent.name);
 		GameObject.Find("Graphics").renderer.material = playerHitColor;
 	}
 
@@ -108,12 +113,17 @@ public class Health : MonoBehaviour {
 	[RPC]
 	void DestroySelf()
 	{
-		//Might have to change myPlayer to something else.  Everything works until the person dies.. Then it kills self :(
-		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("myPlayer").transform.Find("CameraHead").networkView.viewID);
-		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("myPlayer").transform.Find("Trigger").networkView.viewID);
-		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("myPlayer").networkView.viewID);
+		//Might have to change myPlayer to something else.  Everything works until the person dies..
+		//It seems that the trigger lookup is not being deleted!
+
+		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("Player").transform.Find("CameraHead").networkView.viewID);
+		Network.RemoveRPCs(Network.player);
+		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("Player").networkView.viewID);
+		//Network.RemoveRPCs (GameObject.FindGameObjectWithTag ("Player").GetComponents<NetworkView> ()[0].networkView);
 		//Network.DestroyPlayerObjects(Network.player);
-		Destroy(GameObject.FindGameObjectWithTag("myPlayer").gameObject);
+		//Destroy(GameObject.FindGameObjectWithTag("Player").gameObject);
+		Network.Destroy (transform.networkView.viewID);
+		Network.Destroy (transform.parent.gameObject);
 	}
 
 
