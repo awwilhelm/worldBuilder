@@ -4,7 +4,7 @@ using System.Collections;
 public class Health : MonoBehaviour {
 
 	private int maxHealth;
-	public int health;
+	private int health;
 	public NetworkPlayer attacker;
 
 	public Texture healthTex;
@@ -19,6 +19,7 @@ public class Health : MonoBehaviour {
 	{
 		if(networkView.isMine)
 		{
+			print(transform.parent.transform.name);
 			maxHealth = 100;
 			health = maxHealth;
 			healthPercent = 100;
@@ -66,7 +67,7 @@ public class Health : MonoBehaviour {
 	public void TakeDamage(int damage)
 	{
 		//This is called by the person who fires.. Weird.
-		print ("Called");
+		print (transform.parent.transform.name);
 		health -= damage;
 		if(health < 0)
 			health = 0;
@@ -87,6 +88,7 @@ public class Health : MonoBehaviour {
 	[RPC]
 	void UpdateHealth(int tempHealth)
 	{
+		//print ("called1");
 		health = tempHealth;
 	}
 

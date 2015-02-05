@@ -57,9 +57,10 @@ public class basicWeapon : MonoBehaviour {
 
 			if(Physics.Raycast(myCamera.position, myCamera.forward, out hit, range))
 			{
+				//print (hit.transform.tag);
 				if(hit.transform.tag == "Trigger")
 				{
-					hit.transform.gameObject.GetComponent<Health>().TakeDamage(10);
+					hit.transform.gameObject.GetComponent<HealthScript>().TakeDamage(10);
 					/*string name = hit.transform.name;
 					print (name);
 					foreach(GameObject player in transform.parent)
