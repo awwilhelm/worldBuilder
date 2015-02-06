@@ -23,22 +23,19 @@ public class PlayerName : MonoBehaviour {
 				}
 			}
 			
-			//UpdateLocalGameManager(playerName);
+			UpdateLocalGameManager(playerName);
 			networkView.RPC("UpdateMyNameEverywhere", RPCMode.AllBuffered, playerName);
 		}
 	}
 	
-/*	void UpdateLocalGameManager(string pName)
+	void UpdateLocalGameManager(string pName)
 	{
 		GameObject gameManager = GameObject.Find("GameManager");
 		PlayerDatabase dataScript = gameManager.GetComponent<PlayerDatabase>();
 		
 		dataScript.nameSet = true;
 		dataScript.playerName = pName;
-		
-		CommunicationWindow commScript = gameManager.GetComponent<CommunicationWindow>();
-		commScript.playerName = pName;
-	}*/
+	}
 	
 	[RPC]
 	void UpdateMyNameEverywhere(string pName)

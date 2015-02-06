@@ -60,7 +60,13 @@ public class basicWeapon : MonoBehaviour {
 				//print (hit.transform.tag);
 				if(hit.transform.tag == "Trigger")
 				{
-					hit.transform.gameObject.GetComponent<HealthScript>().TakeDamage(10);
+					print (hit.transform.parent.name);
+
+					GameObject.Find(hit.transform.parent.name).transform.gameObject.GetComponent<HealthScript>().enabled = true;
+					GameObject.Find(hit.transform.parent.name).transform.gameObject.GetComponent<HealthScript>().TakeDamage(10);
+					GameObject.Find(hit.transform.parent.name).transform.gameObject.GetComponent<HealthScript>().enabled = false;
+					//hit.transform.networkView.viewID
+					//hit.transform.gameObject.GetComponent<HealthScript>().TakeDamage(10);
 					/*string name = hit.transform.name;
 					print (name);
 					foreach(GameObject player in transform.parent)

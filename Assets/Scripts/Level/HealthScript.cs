@@ -3,15 +3,17 @@ using System.Collections;
 
 public class HealthScript : MonoBehaviour {
 
-	private float health;
+	public float health=50;
 	private float maxHealth;
 	private float healthPercent;
+	//private int count = 0;
 
 	void Awake()
 	{
 		if(networkView.isMine)
 		{
-			networkView.RPC ("UpdateHealth", RPCMode.AllBuffered, 100.0f);
+			//networkView.RPC ("UpdateHealth", RPCMode.AllBuffered, 100.0f);
+			print ("name:: "+transform.parent.name);
 			maxHealth = 100;
 		}
 		else
@@ -37,7 +39,6 @@ public class HealthScript : MonoBehaviour {
 		{
 			Spawn spawnScript = GameObject.Find("SpawnManager").GetComponent<Spawn>();
 			spawnScript.iAmDestroyed = true;
-
 			networkView.RPC("DestroySelf", RPCMode.AllBuffered);
 		}
 	}
@@ -45,7 +46,12 @@ public class HealthScript : MonoBehaviour {
 	public void TakeDamage(int damage)
 	{
 		float newHealth = health - damage;
-		networkView.RPC ("UpdateHealth", RPCMode.AllBuffered, newHealth);
+		health = newHealth;
+		//networkView.RPC ("UpdateHealth", RPCMode.Others, newHealth);
+	}
+	float getHealth()
+	{
+		return health;
 	}
 
 	public float GetHealthPercentage ()
@@ -57,6 +63,8 @@ public class HealthScript : MonoBehaviour {
 	void UpdateHealth (float tempHealth)
 	{
 		health = tempHealth;
+		//print(transform.parent.transform.name);
+		//print ("1 "+health);
 	}
 
 	[RPC]
@@ -65,7 +73,7 @@ public class HealthScript : MonoBehaviour {
 		//Might have to change myPlayer to something else.  Everything works until the person dies..
 		//It seems that the trigger lookup is not being deleted!
 		
-		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("Player").transform.Find("CameraHead").networkView.viewID);
+		//Network.RemoveRPCs(GameObject.FindGameObjectWithTag("Player").transform.Find("CameraHead").networkView.viewID);
 		Network.RemoveRPCs(Network.player);
 		Network.RemoveRPCs(GameObject.FindGameObjectWithTag("Player").networkView.viewID);
 		//Network.RemoveRPCs (GameObject.FindGameObjectWithTag ("Player").GetComponents<NetworkView> ()[0].networkView);
